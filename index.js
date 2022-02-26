@@ -25,15 +25,37 @@ addEventListener("keyup", event => {
     // if(!keys.d) console.log("D key unpressed!");
 });
 
-
 // All images will use this class
-class Image {
-    constructor(xpos, ypos, direction) {
-        
+class GameImage {
+    constructor(img, xpos, ypos, dir) {
+        this.img = new Image();
+        this.img.src = img;
+        this.xpos = xpos;
+        this.ypos = ypos;
+        this.dir = dir;
     }
 
-    directionFunc() {
+    place(context) {
+        context.drawImage(this.img, 100, 100);
+    }
+
+    direction() {
 
     }
 }
 
+// Array of Images
+let images = []
+
+let slime = new GameImage('img/slime_base.png', 100, 100, 100);
+
+images.push(slime);
+
+
+function placeImages() {
+    slime.place(context);
+    requestAnimationFrame(placeImages);
+}
+
+console.log(images);
+placeImages();
