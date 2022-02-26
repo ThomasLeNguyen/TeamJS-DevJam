@@ -27,7 +27,7 @@ addEventListener("keyup", event => {
 
 // All images will use this class
 class GameImage {
-    constructor(img, xpos, ypos, wdh, hgt, speed, move) {
+    constructor(img, xpos, ypos, wdh, hgt, speed, move, which, reset) {
         this.img = new Image();
         this.img.src = img;
         this.xpos = xpos;
@@ -36,6 +36,8 @@ class GameImage {
         this.hgt = hgt;
         this.speed = speed;
         this.move = move;
+        this.which = which;
+        this.reset = reset;
     }
 
     moveX() {
@@ -44,7 +46,14 @@ class GameImage {
 
             if (keys.a && this.xpos > -20) return this.xpos - this.speed;
         } else {
-            
+            let rand = Math.random();
+            console.log(this.which);
+            console.log(rand);
+            this.reset = this.reset + 0.000000000000000000000000000000000000001;
+            if (this.xpos < 725 && rand > 0.50 && this.reset <= 1) return this.xpos + this.speed;
+            if (this.xpos > -20 && rand < 0.50 && this.reset <= 1) return this.xpos - this.speed;
+
+            if (this.reset >= 1) this.reset = 0;
         }
 
         return this.xpos;
@@ -56,7 +65,7 @@ class GameImage {
 
             if (keys.s) return this.ypos + this.speed;
         } else {
-
+            
         }
 
         return this.ypos;
@@ -76,21 +85,19 @@ class GameImage {
 // Array of Images
 let images = []
 
-let xpos = Math.random() * 400;
-let ypos = Math.random() * 300;
+let xpos = Math.random() * 700;
+let ypos = Math.random() * 500;
 
-let slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 3, true);
+let slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 3, true, 0, 0);
 
 images.push(slime);
 
-for (i = 0; i < 2; i++) {
-    xpos = Math.random() * 400;
-    ypos = Math.random() * 300;
-    slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 3, false);
+for (i = 0; i < 30; i++) {
+    xpos = Math.random() * 700;
+    ypos = Math.random() * 500;
+    slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 3, false, i + 1, 0);
     images.push(slime);
 }
-    
-
 
 function placeImages() {
     context.clearRect(0, 0, 800, 600);
