@@ -27,7 +27,7 @@ addEventListener("keyup", event => {
 
 // All images will use this class
 class GameImage {
-    constructor(img, xpos, ypos, wdh, hgt, speed, move, which, reset, rand) {
+    constructor(img, xpos, ypos, wdh, hgt, speed, move, which, reset, xrand, yrand) {
         this.img = new Image();
         this.img.src = img;
         this.xpos = xpos;
@@ -38,24 +38,26 @@ class GameImage {
         this.move = move;
         this.which = which;
         this.reset = reset;
-        this.rand = rand;
+        this.xrand = xrand;
+        this.yrand = yrand;
     }
 
     moveX() {
         if (this.move) {
             if (keys.d && this.xpos < 725) return this.xpos + this.speed;
-
             if (keys.a && this.xpos > -20) return this.xpos - this.speed;
         } else {
-            if (this.reset==0 || this.reset >=1) {
-                this.rand = Math.random();
+            if (this.reset == 0 || this.reset >= 39) {
+                this.xrand = Math.random();
                 this.reset = 0;
             }
             // console.log(this.which);
             // console.log(rand);
-            this.reset = this.reset + ((Math.round(Math.random())));
-            if (this.xpos < 700 && this.rand > 0.50 && this.reset <= 1) return this.xpos + this.speed;
-            if (this.xpos > -20 && this.rand < 0.50 && this.reset <= 1) return this.xpos - this.speed;
+            this.reset = this.reset + Math.random();
+            if (this.reset <= 36) {
+                if (this.xpos < 700 && this.xrand > 0.50) return this.xpos + this.speed;
+                if (this.xpos > -20 && this.xrand < 0.50) return this.xpos - this.speed;
+            }
         }
 
         return this.xpos;
@@ -63,11 +65,16 @@ class GameImage {
 
     moveY() {
         if (this.move) {
-            if (keys.w) return this.ypos - this.speed;
-
-            if (keys.s) return this.ypos + this.speed;
+            if (keys.w && this.ypos > -20) return this.ypos - this.speed;
+            if (keys.s && this.ypos < 500) return this.ypos + this.speed;
         } else {
-            
+            if (this.reset == 0 || this.reset >= 39) {
+                this.yrand = Math.random();
+            }
+            if (this.reset <= 36) {
+                if (this.ypos > -20 && this.yrand < 0.50) return this.ypos - this.speed;
+                if (this.ypos < 500 && this.yrand > 0.50) return this.ypos + this.speed;
+            }
         }
 
         return this.ypos;
@@ -90,16 +97,17 @@ let images = []
 let xpos = Math.random() * 650;
 let ypos = Math.random() * 450;
 
-let slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, true, 0, 0, 0);
+let slime;
 
-images.push(slime);
-
-for (i = 0; i < 30; i++) {
+for (i = 0; i < 20; i++) {
     xpos = Math.random() * 650;
     ypos = Math.random() * 450;
-    slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, false, i + 1, 0, 0.5);
+    slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, false, i + 1, 0, 0.5, 0.5);
     images.push(slime);
 }
+
+slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, true, 0, 0, 0, 0);
+images.push(slime);
 
 function placeImages() {
     context.clearRect(0, 0, 800, 600);
@@ -110,5 +118,5 @@ function placeImages() {
     requestAnimationFrame(placeImages);
 }
 
-console.log(images);
+// console.log(images);
 placeImages();
