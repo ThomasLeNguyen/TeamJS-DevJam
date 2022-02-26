@@ -54,8 +54,10 @@ class GameImage {
             // console.log(this.which);
             // console.log(rand);
             this.reset = this.reset + Math.random();
-            if (this.xpos < 700 && this.xrand > 0.50) return this.xpos + this.speed;
-            if (this.xpos > -20 && this.xrand < 0.50) return this.xpos - this.speed;
+            if (this.reset <= 36) {
+                if (this.xpos < 700 && this.xrand > 0.50) return this.xpos + this.speed;
+                if (this.xpos > -20 && this.xrand < 0.50) return this.xpos - this.speed;
+            }
         }
 
         return this.xpos;
@@ -69,8 +71,10 @@ class GameImage {
             if (this.reset == 0 || this.reset >= 39) {
                 this.yrand = Math.random();
             }
-            if (this.ypos > -20 && this.yrand < 0.50) return this.ypos - this.speed;
-            if (this.ypos < 500 && this.yrand > 0.50) return this.ypos + this.speed;
+            if (this.reset <= 36) {
+                if (this.ypos > -20 && this.yrand < 0.50) return this.ypos - this.speed;
+                if (this.ypos < 500 && this.yrand > 0.50) return this.ypos + this.speed;
+            }
         }
 
         return this.ypos;
@@ -93,16 +97,17 @@ let images = []
 let xpos = Math.random() * 650;
 let ypos = Math.random() * 450;
 
-let slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, true, 0, 0, 0, 0);
+let slime;
 
-images.push(slime);
-
-for (i = 0; i < 30; i++) {
+for (i = 0; i < 20; i++) {
     xpos = Math.random() * 650;
     ypos = Math.random() * 450;
     slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, false, i + 1, 0, 0.5, 0.5);
     images.push(slime);
 }
+
+slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, true, 0, 0, 0, 0);
+images.push(slime);
 
 function placeImages() {
     context.clearRect(0, 0, 800, 600);
