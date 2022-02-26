@@ -26,7 +26,7 @@ addEventListener("keyup", event => {
 });
 
 
-// These will have all the images that we want
+// All images will use this class
 class Image {
     constructor(xpos, ypos, direction) {
         
