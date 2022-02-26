@@ -27,33 +27,86 @@ addEventListener("keyup", event => {
 
 // All images will use this class
 class GameImage {
-    constructor(img, xpos, ypos, dir) {
+    constructor(img, xpos, ypos, wdh, hgt, speed, move, which, reset, rand) {
         this.img = new Image();
         this.img.src = img;
         this.xpos = xpos;
         this.ypos = ypos;
-        this.dir = dir;
+        this.wdh = wdh;
+        this.hgt = hgt;
+        this.speed = speed;
+        this.move = move;
+        this.which = which;
+        this.reset = reset;
+        this.rand = rand;
     }
 
-    place(context) {
-        context.drawImage(this.img, 100, 100);
+    moveX() {
+        if (this.move) {
+            if (keys.d && this.xpos < 725) return this.xpos + this.speed;
+
+            if (keys.a && this.xpos > -20) return this.xpos - this.speed;
+        } else {
+            if (this.reset==0 || this.reset >=1) {
+                this.rand = Math.random();
+                this.reset = 0;
+            }
+            // console.log(this.which);
+            // console.log(rand);
+            this.reset = this.reset + ((Math.round(Math.random())));
+            if (this.xpos < 700 && this.rand > 0.50 && this.reset <= 1) return this.xpos + this.speed;
+            if (this.xpos > -20 && this.rand < 0.50 && this.reset <= 1) return this.xpos - this.speed;
+        }
+
+        return this.xpos;
+    }
+
+    moveY() {
+        if (this.move) {
+            if (keys.w) return this.ypos - this.speed;
+
+            if (keys.s) return this.ypos + this.speed;
+        } else {
+            
+        }
+
+        return this.ypos;
     }
 
     direction() {
 
+    }
+
+    place(context) {
+        this.xpos = this.moveX();
+        this.ypos = this.moveY();
+        context.drawImage(this.img, this.xpos, this.ypos, this.wdh, this.hgt);
     }
 }
 
 // Array of Images
 let images = []
 
-let slime = new GameImage('img/slime_base.png', 100, 100, 100);
+let xpos = Math.random() * 650;
+let ypos = Math.random() * 450;
+
+let slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, true, 0, 0, 0);
 
 images.push(slime);
 
+for (i = 0; i < 30; i++) {
+    xpos = Math.random() * 650;
+    ypos = Math.random() * 450;
+    slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, false, i + 1, 0, 0.5);
+    images.push(slime);
+}
 
 function placeImages() {
-    slime.place(context);
+    context.clearRect(0, 0, 800, 600);
+
+    images.forEach(element => { 
+        element.place(context);
+    });
     requestAnimationFrame(placeImages);
 }
 
