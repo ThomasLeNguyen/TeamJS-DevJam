@@ -3,11 +3,13 @@ const context = canvas.getContext("2d");
 
 let keys = { w: false, a: false, s: false, d: false }
 
+document.documentElement.style.cursor = "url(img/base_aim.png), auto";
+
 addEventListener("keydown", event => {
-    if(event.key === "w") keys.w = true;
-    if(event.key === "a") keys.a = true;
-    if(event.key === "s") keys.s = true;
-    if(event.key === "d") keys.d = true;
+    if (event.key === "w") keys.w = true;
+    if (event.key === "a") keys.a = true;
+    if (event.key === "s") keys.s = true;
+    if (event.key === "d") keys.d = true;
     // if(keys.w) console.log("W key pressed!");
     // if(keys.a) console.log("A key pressed!");
     // if(keys.s) console.log("S key pressed!");
@@ -15,14 +17,18 @@ addEventListener("keydown", event => {
 });
 
 addEventListener("keyup", event => {
-    if(event.key === "w") keys.w = false;
-    if(event.key === "a") keys.a = false;
-    if(event.key === "s") keys.s = false;
-    if(event.key === "d") keys.d = false;
+    if (event.key === "w") keys.w = false;
+    if (event.key === "a") keys.a = false;
+    if (event.key === "s") keys.s = false;
+    if (event.key === "d") keys.d = false;
     // if(!keys.w) console.log("W key unpressed!");
     // if(!keys.a) console.log("A key unpressed!");
     // if(!keys.s) console.log("S key unpressed!");
     // if(!keys.d) console.log("D key unpressed!");
+});
+
+addEventListener("keyup", event => {
+    click = true;
 });
 
 // All images will use this class
@@ -89,6 +95,10 @@ class GameImage {
         this.ypos = this.moveY();
         context.drawImage(this.img, this.xpos, this.ypos, this.wdh, this.hgt);
     }
+
+    hit(context) {
+
+    }
 }
 
 // Array of Images
@@ -106,13 +116,13 @@ for (i = 0; i < 20; i++) {
     images.push(slime);
 }
 
-slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, true, 0, 0, 0, 0);
-images.push(slime);
+userslime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, true, 0, 0, 0, 0);
+images.push(userslime);
 
 function placeImages() {
     context.clearRect(0, 0, 800, 600);
 
-    images.forEach(element => { 
+    images.forEach(element => {
         element.place(context);
     });
     requestAnimationFrame(placeImages);
