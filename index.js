@@ -27,15 +27,9 @@ addEventListener("keyup", event => {
     // if(!keys.d) console.log("D key unpressed!");
 });
 
-let mouseClick = false;
-addEventListener('click', event => {
-    console.log("Click");
-    mouseClick = true;
-});
-
 // All images will use this class
 class GameImage {
-    constructor(img, xPos, yPos, imgSize, speed, canMove, timer, xRand, yRand, isMC, isAlive, isCoin) {
+    constructor(img, xPos, yPos, imgSize, speed, canMove, timer, xRand, yRand, isMC, isAlive, isCake) {
         this.img = new Image();
         this.img.src = img;
         this.xPos = xPos;
@@ -48,7 +42,7 @@ class GameImage {
         this.yRand = yRand;
         this.isMC = isMC;
         this.isAlive = isAlive;
-        this.isCoin = isCoin;
+        this.isCake = isCake;
     }
 
     moveX() {
@@ -80,17 +74,24 @@ class GameImage {
     }
 
     characterXPos() {
-        if (this.isMC) return this.xPos;
+        return this.xPos;
     }
 
     characterYPos() {
-        if (this.isMC) return this.yPos;
+        return this.yPos;
     }
 
-    distanceFromCoins(mcXPos, mcYPos) {
-        if (this.isCoin) {
-            // console.log("Coin x Pos", this.xpos, "Coin y Pos", this.ypos);
-            let dis = Math.sqrt(Math.abs(Math.sqrt(mcXPos * this.xPos)) + Math.abs(Math.sqrt(mcYPos * this.yPos)));
+    click(x, y, x2, y2) {
+        const dist = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
+        // console.log(dist);
+
+        if (dist < this.imgSize)
+            console.log("Found");
+    }
+
+    distanceFromCake(mcXPos, mcYPos) {
+        if (this.isCake) {
+            const dis = Math.sqrt();
             console.log(dis);
         }
     }
@@ -104,7 +105,7 @@ class GameImage {
 
         this.timer = this.timer + Math.random();
 
-        if (this.isCoin) {
+        if (this.isCake) {
             //this.distanceFromCoins();
         }
     }
@@ -127,33 +128,39 @@ let ypos;
 // Slime Size
 let slimeSize = 96;
 // Slime Spawn
-for (i = 0; i < 20; i++) {
+for (i = 0; i < 15; i++) {
     xpos = Math.random() * 650;
     ypos = Math.random() * 450;
     let img = new GameImage('img/slime_base.png', xpos, ypos, slimeSize, 1.5, false, 0, 0.5, 0.5, false, true, false);
     images.push(img);
 }
 
-let img = new GameImage('img/slime_base.png', xpos, ypos, slimeSize, 1.5, true, 0, 0, 0, false, true, false);
-images.push(img);
+// Main Character
+let slimeMC = new GameImage('img/slime_base.png', xpos, ypos, slimeSize, 1.5, true, 0, 0, 0, true, true, false);
+images.push(slimeMC);
 
-// Coin Size
-let coinSize = 64;
-// Coin x Position
+let mouseClick = false;
+canvas.addEventListener('click', (event) => {
+    const r = canvas.getBoundingClientRect();
+    const x = event.clientX - r.left;
+    const y = event.clientY - r.top;
+    let xMC = slimeMC.characterXPos();
+    let yMC = slimeMC.characterYPos();
+    slimeMC.click(x, y, xMC, yMC);
+    // console.log(xMC, yMC);
+    mouseClick = true;
+});
+
+// Cake Size
+let coinSize = 128;
+// Cake x Position
 let coinXPos = [100, 200, 300];
-// Coin y Position
+// Cake y Position
 let coinYPos = [100, 200, 300];
-// Coin Spawn
+// Cake Spawn
 for (i = 0; i < 1; i++) {
-    img = new GameImage('img/coin.png', coinXPos[i], coinYPos[i], coinSize, 0, false, 0, 0, 0, false, false, true);
+    img = new GameImage('img/cake.png', coinXPos[i], coinYPos[i], coinSize, 0, false, 0, 0, 0, false, false, true);
     images.push(img);
-}
-
-// Crosshair
-function showCoords(event) {
-    var x = event.clientX;
-    var y = event.clientY;
-    img = new GameImage('img/base_aim_1.png', x, y, 100, 0, false, i , 0 ,0 ,0 , true, false, false);
 }
 
 function placeImages() {
