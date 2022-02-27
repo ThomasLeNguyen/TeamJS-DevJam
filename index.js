@@ -5,6 +5,7 @@ let keys = { w: false, a: false, s: false, d: false, }
 
 document.documentElement.style.cursor = "url(img/base_aim.png), auto";
 let shotsLeft = 3;
+document.getElementById('shotsLeft').innerHTML = shotsLeft;
 addEventListener("keydown", event => {
     if (event.key === "w") keys.w = true;
     // if(keys.w) console.log("W key pressed!");
@@ -85,13 +86,14 @@ class GameImage {
         const dist = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
         // console.log(dist);
         shotsLeft--;
-        if (dist < this.imgSize) {
+        if (dist < 80) {
             alert("Found");
             shotsLeft = 3;
         } else if (shotsLeft <= 0) {
             alert("Failed to find")
             shotsLeft = 3;
         }
+        document.getElementById('shotsLeft').innerHTML = shotsLeft;
     }
 
     distanceFromCake(mcXPos, mcYPos) {
