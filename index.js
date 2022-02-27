@@ -3,6 +3,8 @@ const context = canvas.getContext("2d");
 
 let keys = { w: false, a: false, s: false, d: false, }
 
+document.documentElement.style.cursor = "url(img/base_aim.png), auto";
+
 addEventListener("keydown", event => {
     if(event.key === "w") keys.w = true;
     // if(keys.w) console.log("W key pressed!");
@@ -157,7 +159,7 @@ function showCoords(event) {
 function placeImages() {
     context.clearRect(0, 0, 800, 600);
 
-    images.forEach(element => { 
+    images.forEach(element => {
         element.place(context);
     });
 
