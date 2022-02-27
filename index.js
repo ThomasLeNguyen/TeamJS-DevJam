@@ -2,7 +2,9 @@ const canvas = document.getElementById("gameArea");
 const context = canvas.getContext("2d");
 
 let keys = { w: false, a: false, s: false, d: false }
-
+let leftClick = false;
+let mouseX = null;
+let mouseY = null;
 document.documentElement.style.cursor = "url(img/base_aim.png), auto";
 
 addEventListener("keydown", event => {
@@ -27,8 +29,10 @@ addEventListener("keyup", event => {
     // if(!keys.d) console.log("D key unpressed!");
 });
 
-addEventListener("keyup", event => {
-    click = true;
+addEventListener("click", event => {
+    leftClick = true;
+    mouseX = event.clientX;
+    mouseY = event.clientY;
 });
 
 // All images will use this class
@@ -95,10 +99,6 @@ class GameImage {
         this.ypos = this.moveY();
         context.drawImage(this.img, this.xpos, this.ypos, this.wdh, this.hgt);
     }
-
-    hit(context) {
-
-    }
 }
 
 // Array of Images
@@ -113,11 +113,12 @@ for (i = 0; i < 20; i++) {
     xpos = Math.random() * 650;
     ypos = Math.random() * 450;
     slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, false, i + 1, 0, 0.5, 0.5);
+
     images.push(slime);
 }
 
-userslime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, true, 0, 0, 0, 0);
-images.push(userslime);
+slime = new GameImage('img/slime_base.png', xpos, ypos, 96, 96, 1.5, true, 0, 0, 0, 0);
+images.push(slime);
 
 function placeImages() {
     context.clearRect(0, 0, 800, 600);
