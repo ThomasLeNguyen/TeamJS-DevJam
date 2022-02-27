@@ -4,26 +4,26 @@ const context = canvas.getContext("2d");
 let keys = { w: false, a: false, s: false, d: false, }
 
 document.documentElement.style.cursor = "url(img/base_aim.png), auto";
-
+let shotsLeft = 3;
 addEventListener("keydown", event => {
-    if(event.key === "w") keys.w = true;
+    if (event.key === "w") keys.w = true;
     // if(keys.w) console.log("W key pressed!");
-    if(event.key === "a") keys.a = true;
+    if (event.key === "a") keys.a = true;
     // if(keys.a) console.log("A key pressed!");
-    if(event.key === "s") keys.s = true;
+    if (event.key === "s") keys.s = true;
     // if(keys.s) console.log("S key pressed!");
-    if(event.key === "d") keys.d = true;
+    if (event.key === "d") keys.d = true;
     // if(keys.d) console.log("D key pressed!");
 });
 
 addEventListener("keyup", event => {
-    if(event.key === "w") keys.w = false;
+    if (event.key === "w") keys.w = false;
     // if(!keys.w) console.log("W key unpressed!");
-    if(event.key === "a") keys.a = false;
+    if (event.key === "a") keys.a = false;
     // if(!keys.a) console.log("A key unpressed!");
-    if(event.key === "s") keys.s = false;
+    if (event.key === "s") keys.s = false;
     // if(!keys.s) console.log("S key unpressed!");
-    if(event.key === "d") keys.d = false;
+    if (event.key === "d") keys.d = false;
     // if(!keys.d) console.log("D key unpressed!");
 });
 
@@ -84,9 +84,14 @@ class GameImage {
     click(x, y, x2, y2) {
         const dist = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
         // console.log(dist);
-
-        if (dist < this.imgSize)
-            console.log("Found");
+        shotsLeft--;
+        if (dist < this.imgSize) {
+            alert("Found");
+            shotsLeft = 3;
+        } else if (shotsLeft <= 0) {
+            alert("Failed to find")
+            shotsLeft = 3;
+        }
     }
 
     distanceFromCake(mcXPos, mcYPos) {
@@ -120,7 +125,7 @@ class GameImage {
 
 // Array of GameImages
 let images = []
-// X Position of Images
+    // X Position of Images
 let xpos;
 // Y Position of Images
 let ypos;
